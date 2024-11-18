@@ -51,7 +51,7 @@ class CNN(torch.nn.Module):
 cnn_model_path = 'models/pcos_cnn_model.pth'
 if not os.path.exists("models/pcos_cnn_model.pth"):
     # URL to the shared Google Drive file
-    url = 'https://drive.google.com/uc?id=1K1SfayDysHbBOBJmCcTn5-_oiMLW2Lf4'
+    url = 'https://drive.google.com/uc?id=1198wvqymPeJ8VLw5U3cVpHVEduATVq1B'
 
     # Download the model
     gdown.download(url, cnn_model_path, quiet=False)
@@ -74,7 +74,7 @@ preprocess = transforms.Compose([
 xgb_model_path = 'models/pcos_xgb_model.json'
 if not os.path.exists("models/pcos_xgb_model.json"):
     # URL to the shared Google Drive file
-    url = 'https://drive.google.com/uc?id=1t2XsTEmSwrq0zK9Gy8z24LPIBr__jD49'
+    url = 'https://drive.google.com/uc?id=1lPOWayhWkJEbxdH8P3JehLThm5rillQg'
 
     # Download the model
     gdown.download(url, xgb_model_path, quiet=False)
