@@ -58,6 +58,7 @@ if not os.path.exists("models/pcos_cnn_model.pth"):
 # Load PyTorch model
 cnn_model = CNN()
 cnn_model.load_state_dict(torch.load(cnn_model_path, map_location=torch.device('cpu')))
+print("CNN Model Loaded")
 cnn_model.eval()
 
 # Define image preprocessing
@@ -78,6 +79,7 @@ if not os.path.exists("models/pcos_xgb_model.pkl"):
     gdown.download(url, xgb_model_path, quiet=False)
 
 xgboost_model = joblib.load(xgb_model_path)
+print("XGB Model Loaded")
 
 # ----------------- Streamlit UI -----------------
 st.title("PCOS Prediction Tool")
