@@ -105,7 +105,7 @@ if input_method == "Upload Image (Sonogram)":
         with st.spinner('Classifying...'):
             output = cnn_model(input_tensor)
             _, predicted_class = torch.max(output, 1)
-            st.write(f"Predicted Class: {"Infected" if predicted_class.item()==0 else "Not Infected"}")
+            st.write(f"Predicted Class: {'Infected' if predicted_class.item()==0 else 'Not Infected'}")
             st.write(f"Raw Output: {output.tolist()}")
 
 elif input_method == "Manual Input Features":
@@ -131,5 +131,5 @@ elif input_method == "Manual Input Features":
         with st.spinner('Classifying...'):
             prediction = xgboost_model.predict(input_df)
             prediction_proba = xgboost_model.predict_proba(input_df)
-            st.write(f"Predicted Class: {"Infected" if prediction[0]==1 else "Not Infected"}")
+            st.write(f"Predicted Class: {'Infected' if prediction[0]==1 else 'Not Infected'}")
             st.write(f"Prediction Probabilities: {prediction_proba[0]}")
