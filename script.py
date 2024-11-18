@@ -9,6 +9,7 @@ import torch.nn.functional as F
 from PIL import Image
 from torch import nn
 from torchvision import transforms
+from xgboost import XGBClassifier
 
 TARGET_WIDTH = 1024
 TARGET_HEIGHT = 1024
@@ -70,15 +71,16 @@ preprocess = transforms.Compose([
 
 # ----------------- XGBoost Model Loading -----------------
 
-xgb_model_path = 'models/pcos_xgb_model.pkl'
-if not os.path.exists("models/pcos_xgb_model.pkl"):
+xgb_model_path = 'models/pcos_xgb_model.json'
+if not os.path.exists("models/pcos_xgb_model.json"):
     # URL to the shared Google Drive file
-    url = 'https://drive.google.com/uc?id=1a_vLOOP-aE6UdHoRf3dwWHm4nHuCWHUH'
+    url = 'https://drive.google.com/uc?id=133l7_HSVkNnGHNlQ5DVMkXC8yOmM2y1m'
 
     # Download the model
     gdown.download(url, xgb_model_path, quiet=False)
 
-xgboost_model = joblib.load(xgb_model_path)
+xgboost_model = XGBClassifier()
+xgboost_model.load_model(xgb_model_path)
 print("XGB Model Loaded")
 
 # ----------------- Streamlit UI -----------------
