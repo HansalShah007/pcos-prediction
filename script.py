@@ -65,14 +65,15 @@ preprocess = transforms.Compose([
 
 # ----------------- XGBoost Model Loading -----------------
 
-xgb_model_path = 'models/pcos_xgb_model.pth'
-if not os.path.exists("models/pcos_xgb_model.pth"):
+xgb_model_path = 'models/pcos_xgb_model.pkl'
+if not os.path.exists("models/pcos_xgb_model.pkl"):
     # URL to the shared Google Drive file
-    url = 'https://drive.google.com/uc?id=1a_vLOOP-aE6UdHoRf3dwWHm4nHuCWHUH_'
+    url = 'https://drive.google.com/uc?id=1a_vLOOP-aE6UdHoRf3dwWHm4nHuCWHUH'
 
     # Download the model
     gdown.download(url, xgb_model_path, quiet=False)
-xgboost_model = joblib.load("models/pcos_xgb_model.pkl")
+
+xgboost_model = joblib.load(xgb_model_path)
 
 # ----------------- Streamlit UI -----------------
 st.title("PCOS Prediction Tool")
