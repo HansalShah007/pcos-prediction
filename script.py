@@ -9,8 +9,9 @@ import torch.nn.functional as F
 from PIL import Image
 from torch import nn
 from torchvision import transforms
-from dotenv import load_dotenv
-load_dotenv()
+
+TARGET_WIDTH = 1024
+TARGET_HEIGHT = 1024
 
 # Making the directory for storing models if one does not exists
 os.makedirs("models", exist_ok=True)
@@ -25,8 +26,8 @@ class CNN(torch.nn.Module):
         self.conv3 = nn.Conv2d(32, 64, kernel_size=5, stride=1)
 
         self.final_output_channels = 64
-        self.final_conv_width = (((((int(os.getenv("TARGET_WIDTH")) - 4) // 2) - 4) // 2) - 4) // 2
-        self.final_conv_height = (((((int(os.getenv("TARGET_HEIGHT")) - 4) // 2) - 4) // 2) - 4) // 2
+        self.final_conv_width = (((((TARGET_WIDTH - 4) // 2) - 4) // 2) - 4) // 2
+        self.final_conv_height = (((((TARGET_HEIGHT - 4) // 2) - 4) // 2) - 4) // 2
 
         self.fc1 = nn.Linear(self.final_output_channels * self.final_conv_width * self.final_conv_height, 256)
         self.fc2 = nn.Linear(256, 128)
@@ -61,7 +62,7 @@ cnn_model.eval()
 
 # Define image preprocessing
 preprocess = transforms.Compose([
-    transforms.Resize((int(os.getenv("TARGET_WIDTH")), int(os.getenv("TARGET_HEIGHT")))),
+    transforms.Resize((TARGET_WIDTH, TARGET_HEIGHT)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.5], std=[0.5]),  
 ])
