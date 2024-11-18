@@ -71,69 +71,69 @@ preprocess = transforms.Compose([
 
 # ----------------- XGBoost Model Loading -----------------
 
-xgb_model_path = 'models/pcos_xgb_model.json'
-if not os.path.exists("models/pcos_xgb_model.json"):
-    # URL to the shared Google Drive file
-    url = 'https://drive.google.com/uc?id=1lPOWayhWkJEbxdH8P3JehLThm5rillQg'
+# xgb_model_path = 'models/pcos_xgb_model.json'
+# if not os.path.exists("models/pcos_xgb_model.json"):
+#     # URL to the shared Google Drive file
+#     url = 'https://drive.google.com/uc?id=1lPOWayhWkJEbxdH8P3JehLThm5rillQg'
 
-    # Download the model
-    gdown.download(url, xgb_model_path, quiet=False)
+#     # Download the model
+#     gdown.download(url, xgb_model_path, quiet=False)
 
-xgboost_model = XGBClassifier()
-xgboost_model.load_model(xgb_model_path)
-print("XGB Model Loaded")
+# xgboost_model = XGBClassifier()
+# xgboost_model.load_model(xgb_model_path)
+# print("XGB Model Loaded")
 
 # ----------------- Streamlit UI -----------------
 st.title("PCOS Prediction Tool")
-st.write("Choose your input method for PCOS prediction:")
+# st.write("Choose your input method for PCOS prediction:")
 
-# User input method
-input_method = st.radio(
-    "Select input method:",
-    ("Upload Image (Sonogram)", "Manual Input Features")
-)
+# # User input method
+# input_method = st.radio(
+#     "Select input method:",
+#     ("Upload Image (Sonogram)", "Manual Input Features")
+# )
 
-if input_method == "Upload Image (Sonogram)":
-    st.write("Upload an image to classify!")
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
+# if input_method == "Upload Image (Sonogram)":
+st.write("Upload an image to classify!")
+uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
 
-    if uploaded_file is not None:
-        # Display the uploaded image
-        image = Image.open(uploaded_file)
-        st.image(image, caption="Uploaded Image", use_container_width=True)
+if uploaded_file is not None:
+    # Display the uploaded image
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", use_container_width=True)
 
-        # Preprocess the image
-        input_tensor = preprocess(image).unsqueeze(0)
+    # Preprocess the image
+    input_tensor = preprocess(image).unsqueeze(0)
 
-        # Perform inference
-        with st.spinner('Classifying...'):
-            output = cnn_model(input_tensor)
-            _, predicted_class = torch.max(output, 1)
-            st.write(f"Predicted Class: {'Infected' if predicted_class.item()==0 else 'Not Infected'}")
-            st.write(f"Raw Output: {output.tolist()}")
+    # Perform inference
+    with st.spinner('Classifying...'):
+        output = cnn_model(input_tensor)
+        _, predicted_class = torch.max(output, 1)
+        st.write(f"Predicted Class: {'Infected' if predicted_class.item()==0 else 'Not Infected'}")
+        st.write(f"Raw Output: {output.tolist()}")
 
-elif input_method == "Manual Input Features":
-    st.write("Enter the following features for manual prediction:")
+# elif input_method == "Manual Input Features":
+#     st.write("Enter the following features for manual prediction:")
 
-    # List of features required by the XGBoost model
-    feature_names = xgboost_model.get_booster().feature_names
+#     # List of features required by the XGBoost model
+#     feature_names = xgboost_model.get_booster().feature_names
 
-    # Collect user input for each feature
-    input_data = {}
-    for feature in feature_names:
-        if "(Y/N)" in feature:
-            input_data[feature] = st.radio(feature, options=[0, 1])
-        else:
-            input_data[feature] = st.number_input(feature, value=0.0)
+#     # Collect user input for each feature
+#     input_data = {}
+#     for feature in feature_names:
+#         if "(Y/N)" in feature:
+#             input_data[feature] = st.radio(feature, options=[0, 1])
+#         else:
+#             input_data[feature] = st.number_input(feature, value=0.0)
 
-    # Predict button
-    if st.button("Predict"):
-        # Convert input data to a DataFrame
-        input_df = pd.DataFrame([input_data])
+#     # Predict button
+#     if st.button("Predict"):
+#         # Convert input data to a DataFrame
+#         input_df = pd.DataFrame([input_data])
 
-        # Perform inference
-        with st.spinner('Classifying...'):
-            prediction = xgboost_model.predict(input_df)
-            prediction_proba = xgboost_model.predict_proba(input_df)
-            st.write(f"Predicted Class: {'Infected' if prediction[0]==1 else 'Not Infected'}")
-            st.write(f"Prediction Probabilities: {prediction_proba[0]}")
+#         # Perform inference
+#         with st.spinner('Classifying...'):
+#             prediction = xgboost_model.predict(input_df)
+#             prediction_proba = xgboost_model.predict_proba(input_df)
+#             st.write(f"Predicted Class: {'Infected' if prediction[0]==1 else 'Not Infected'}")
+#             st.write(f"Prediction Probabilities: {prediction_proba[0]}")
