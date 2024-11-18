@@ -13,8 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Making the directory for storing models if one does not exists
-if not os.path.exists("models"):
-    os.makedirs("models")
+os.makedirs("models", exist_ok=True)
 
 # ----------------- PyTorch CNN Model Definition -----------------
 class CNN(torch.nn.Module):
