@@ -12,6 +12,10 @@ from torchvision import transforms
 from dotenv import load_dotenv
 load_dotenv()
 
+# Making the directory for storing models if one does not exists
+if not os.path.exists("models"):
+    os.makedirs("models")
+
 # ----------------- PyTorch CNN Model Definition -----------------
 class CNN(torch.nn.Module):
     def __init__(self):
